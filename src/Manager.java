@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 public class Manager {
     private static int id = 0;
@@ -30,7 +32,7 @@ public class Manager {
         Epic epic = epics.get(subtask.getEpicId());
         if (epic != null) {
             subtasks.put(newSubtaskId, subtask);
-            epic.setSubtaskIds(newSubtaskId);
+            epic.addSubtaskId(newSubtaskId);
             updateStatusEpic(epic);
         }
     }
@@ -96,10 +98,10 @@ public class Manager {
         return subtasks.get(id);
     }
 
-    public ArrayList<Task> getAllTasks() {
+    public List<Task> getAllTasks() {
         if (tasks.size() == 0) {
             System.out.println("Список задач пуст");
-            return null;
+            return Collections.emptyList();
         }
         return new ArrayList<>(tasks.values());
     }
@@ -120,16 +122,17 @@ public class Manager {
         return new ArrayList<>(subtasks.values());
     }
 
-    public ArrayList<Subtask> getAllSubtasksByEpicId(int id) {
+    public List<Subtask> getAllSubtasksByEpicId(int id) {
         if (epics.containsKey(id)) {
-            ArrayList<Subtask> subtasksNew = new ArrayList<>();
+            List<Subtask> subtasksNew = new ArrayList<>();
             Epic epic = epics.get(id);
             for (int i = 0; i < epic.getSubtaskIds().size(); i++) {
-                subtasksNew.add(subtasks.get(epic.getSubtaskIds().get(i)));
+                Subtask constant = subtasks.get(epic.getSubtaskIds().get(i));
+                subtasksNew.add(constant);
             }
             return subtasksNew;
         } else {
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -141,27 +144,27 @@ public class Manager {
         }
     }
 
-    public void updateStatusEpic(Epic epic) {
+    private void updateStatusEpic(Epic epic) {
         if (epics.containsKey(epic.getId())) {
             if (epic.getSubtaskIds().size() == 0) {
                 epic.setStatus("NEW");
             } else {
-                ArrayList<Subtask> subtasksNew = new ArrayList<>();
+                ArrayList<Subtask> allSubtasks = new ArrayList<>();
                 int countDone = 0;
                 int countNew = 0;
 
                 for (int i = 0; i < epic.getSubtaskIds().size(); i++) {
-                    subtasksNew.add(subtasks.get(epic.getSubtaskIds().get(i)));
+                    allSubtasks.add(subtasks.get(epic.getSubtaskIds().get(i)));
                 }
 
-                for (Subtask subtask : subtasksNew) {
-                    if (subtask.getStatus().equals("DONE")) {
+                for (Subtask subtask : allSubtasks) {
+                    if ("DONE".equals(subtask.getStatus())) {
                         countDone++;
                     }
-                    if (subtask.getStatus().equals("NEW")) {
+                    if ("NEW".equals(subtask.getStatus())) {
                         countNew++;
                     }
-                    if (subtask.getStatus().equals("IN_PROGRESS")) {
+                    if ("IN_PROGRESS".equals(subtask.getStatus())) {
                         epic.setStatus("IN_PROGRESS");
                         return;
                     }
@@ -182,11 +185,22 @@ public class Manager {
 
     public void updateSubtask(Subtask subtask) {
         if (subtasks.containsKey(subtask.getId())) {
-            subtasks.put(subtask.getId(), subtask);
             Epic epic = epics.get(subtask.getEpicId());
-            updateStatusEpic(epic);
+            if (epics.containsKey(epic.getId())) {
+                subtasks.put(subtask.getId(), subtask);
+                updateStatusEpic(epic);
+            }
         } else {
             System.out.println("Подзадача не найдена");
+        }
+    }
+
+    public void updateEpic(Epic epic) {
+        if (epics.containsKey(epic.getId())) {
+            epics.put(epic.getId(), epic);
+            updateStatusEpic(epic);
+        } else {
+            System.out.println("Сложная задача не найдена");
         }
     }
 

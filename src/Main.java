@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
@@ -25,7 +26,7 @@ public class Main {
                 "Написать дипломную работу и выступить с ней", "NEW");
         manager.addSubtask(subtask4);
 
-        ArrayList<Task> taskList = manager.getAllTasks();
+        List<Task> taskList = manager.getAllTasks();
         ArrayList<Epic> epicList = manager.getAllEpics();
         ArrayList<Subtask> subtaskList = manager.getAllSubtasks();
 
@@ -58,10 +59,14 @@ public class Main {
         System.out.println(subtask);
         System.out.println("При этом изменился статус сложной задачи:");
         manager.printEpics();
+        System.out.println("Меняем статус подзадачи");
+        epic.setStatus("IN_PROGRESS");
+        manager.updateEpic(epic);
+        System.out.println(epic);
         System.out.println();
 
         System.out.println("Получение подзадач по идентификатору сложной задачи:");
-        ArrayList<Subtask> subtasksByEpicId = manager.getAllSubtasksByEpicId(3);
+        List<Subtask> subtasksByEpicId = manager.getAllSubtasksByEpicId(3);
         System.out.println(subtasksByEpicId);
 
         // алгоритмы удаления
