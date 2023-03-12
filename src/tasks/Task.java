@@ -1,12 +1,16 @@
+package tasks;
+
+import status.Status;
+
 import java.util.Objects;
 
 public class Task {
     private int id;
     private final String title;
     private final String description;
-    private String status;
+    private Status status;
 
-    public Task(String title, String description, String status) {
+    public Task(String title, String description, Status status) {
         this.description = description;
         this.title = title;
         this.status = status;
@@ -28,11 +32,11 @@ public class Task {
         return title;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -55,5 +59,4 @@ public class Task {
         return "Task{" + "id=" + id + ", title='" + title + "'" +
                 ", description='" + description + "'" + ", status=" + status + "}";
     }
-
 }
