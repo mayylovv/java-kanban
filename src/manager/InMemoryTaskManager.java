@@ -11,7 +11,8 @@ import java.util.List;
 public class InMemoryTaskManager implements TaskManager {
     private static int id = 0;
 
-    HistoryManager historyManager;
+    private final HistoryManager historyManager;
+
     public InMemoryTaskManager(HistoryManager historyManager) {
         this.historyManager = historyManager;
     }
@@ -26,7 +27,8 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Task> getHistory() {
-        return historyManager.getHistory();   // возвр historyManager.getHistory()
+        return historyManager.getHistory();
+
     }
 
     @Override
@@ -34,6 +36,7 @@ public class InMemoryTaskManager implements TaskManager {
         int newTaskId = generateId();
         task.setId(newTaskId);
         tasks.put(newTaskId, task);
+        historyManager.add(task); // add in history
     }
 
     @Override
@@ -41,6 +44,7 @@ public class InMemoryTaskManager implements TaskManager {
         int newEpicId = generateId();
         epic.setId(newEpicId);
         epics.put(newEpicId, epic);
+        historyManager.add(epic);  // add in history
     }
 
     @Override
@@ -50,6 +54,7 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epics.get(subtask.getEpicId());
         if (epic != null) {
             subtasks.put(newSubtaskId, subtask);
+            historyManager.add(subtask);  // add in history
             epic.addSubtaskId(newSubtaskId);
             updateStatusEpic(epic);
         }
@@ -176,8 +181,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    @Override
-    public void updateStatusEpic(Epic epic) {
+    private void updateStatusEpic(Epic epic) {
         if (epics.containsKey(epic.getId())) {
             if (epic.getSubtaskIds().size() == 0) {
                 epic.setStatus(Status.NEW);
@@ -239,7 +243,6 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    @Override
     public void printTasks() {
         if (tasks.size() == 0) {
             System.out.println("Список простых задач пуст");
@@ -251,7 +254,6 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    @Override
     public void printEpics() {
         if (epics.size() == 0) {
             System.out.println("Список сложных задач пуст");
@@ -264,7 +266,6 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    @Override
     public void printSubtasks() {
         if (subtasks.size() == 0) {
             System.out.println("Список подзадач пуст");
