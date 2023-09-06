@@ -5,50 +5,58 @@ import tasks.Epic;
 import tasks.Subtask;
 
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 public interface TaskManager {
 
-     List<Task> getHistory();
+    List<Task> getHistory();
 
-     void addTask(Task task);
+    Task addTask(Task task);
 
-     void addEpic(Epic epic);
+    Epic addEpic(Epic epic);
 
-     void addSubtask(Subtask subtask);
+    Subtask addSubtask(Subtask subtask);
 
-     void deleteTaskById(int id);
+    void deleteTaskById(int id);
 
-     void deleteEpicById(int id);
+    void deleteEpicById(int id);
 
-     void deleteSubtaskById(int id);
+    void deleteSubtaskById(int id);
 
-     void deleteAllTasks();
+    void deleteAllTasks();
 
-     void deleteAllEpics();
+    void deleteAllEpics();
 
-     void deleteAllSubtasks();
+    void deleteAllSubtasks();
 
-     Task getTaskById(int id);
+    void deleteAllSubtasksByEpic(Epic epic);
 
-     Epic getEpicById(int id);
+    Task getTaskById(int id);
 
-     Subtask getSubtaskById(int id);
+    Epic getEpicById(int id);
 
-     List<Task> getAllTasks();
+    Subtask getSubtaskById(int id);
 
-     List<Epic> getAllEpics();
+    List<Task> getAllTasks();
 
-     List<Subtask> getAllSubtasks();
+    List<Epic> getAllEpics();
 
-     List<Subtask> getAllSubtasksByEpicId(int id);
+    List<Subtask> getAllSubtasks();
 
-     void updateTask(Task task);
+    List<Subtask> getAllSubtasksByEpicId(int id);
 
-     void updateSubtask(Subtask subtask);
+    void updateTask(Task task);
 
-     void updateEpic(Epic epic);
+    void updateSubtask(Subtask subtask);
 
+    void updateEpic(Epic epic);
+
+    List<Task> getPrioritizedTasksSet();
+
+    void validate(Task task);
 }
+
 
 

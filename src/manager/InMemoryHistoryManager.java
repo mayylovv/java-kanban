@@ -14,11 +14,11 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     private static class CustomLinkedList {
 
-        Map<Integer, Node<Task>> table = new HashMap<>();
-        Node<Task> head;
-        Node<Task> tail;
+        private final Map<Integer, Node<Task>> table = new HashMap<>();
+        private Node<Task> head;
+        private Node<Task> tail;
 
-        void linkLast(Task task) { // будет добавлять задачу в конец списка
+        private void linkLast(Task task) { // будет добавлять задачу в конец списка
             Node<Task> newNode = new Node<>(null, tail, task);
             removeNode(table.get(task.getId()));
             if (tail == null) {
@@ -31,7 +31,7 @@ public class InMemoryHistoryManager implements HistoryManager {
             table.put(task.getId(),newNode);
         }
 
-        void removeNode(Node<Task> node) {
+        private void removeNode(Node<Task> node) {
             if (node != null) {
                 final Node<Task> prev = node.prev;
                 final Node<Task> next = node.next;
@@ -62,7 +62,7 @@ public class InMemoryHistoryManager implements HistoryManager {
             return tasks;
         }
 
-        Node<Task> getNode(int id) {
+        private Node<Task> getNode(int id) {
             return table.get(id);
         }
     }
@@ -103,3 +103,4 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 }
+
